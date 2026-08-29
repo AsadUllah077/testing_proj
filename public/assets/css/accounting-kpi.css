@@ -1,0 +1,597 @@
+:root {
+    --p: #0078c8;
+    /* project primary blue        */
+    --p-dark: #006bb0;
+    /* hover / dark variant        */
+    --p-light: #f6f9fc;
+    /* light bg tint               */
+    --p-ring: rgba(0, 120, 200, 0.18);
+    /* --navy: #253544; */
+    --navy: #0078c8;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --purple: #6554c0;
+    --teal: #0a8de4;
+    --bg: #f6f9fc;
+    --card: #ffffff;
+    --border: #e0e0e0;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --light: #f3f4f6;
+}
+
+body {
+    background: var(--bg);
+}
+
+/* ── Header ──────────────────────────────────────────── */
+.kpi-header {
+    background: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.kpi-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 24px;
+}
+
+.kpi-header h1 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+}
+
+.kpi-header .subtitle {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 2px;
+}
+
+/* health badge */
+.health-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.health-badge.excellent {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.health-badge.good {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.health-badge.warning {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.health-badge.poor {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.health-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    animation: blink 2s infinite;
+}
+
+.health-badge.excellent .health-dot {
+    background: #059669;
+}
+
+.health-badge.good .health-dot {
+    background: #2563eb;
+}
+
+.health-badge.warning .health-dot {
+    background: #d97706;
+}
+
+.health-badge.poor .health-dot {
+    background: #dc2626;
+}
+
+@keyframes blink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.35;
+    }
+}
+
+/* period selector */
+.period-select-wrap select {
+    appearance: none;
+    background: var(--p-light);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 5px 28px 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 9px center;
+}
+
+.period-select-wrap select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--p-ring);
+}
+
+.period-select-wrap select option {
+    background: #fff;
+}
+
+/* ── Tabs ─────────────────────────────────────────────── */
+.kpi-tabs {
+    background: #fff;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    padding: 0 24px;
+    overflow-x: auto;
+}
+
+.kpi-tab {
+    padding: 11px 18px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    white-space: nowrap;
+    transition: all 0.15s;
+    user-select: none;
+}
+
+.kpi-tab:hover {
+    color: var(--navy);
+}
+
+.kpi-tab.active {
+    color: var(--p);
+    border-bottom-color: var(--p);
+}
+
+/* ── Summary Banner ──────────────────────────────────── */
+.summary-banner {
+    background: #ffffff;
+    padding: 18px 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    position: relative;
+    border-bottom: 1px solid var(--border);
+}
+
+.summary-banner::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--p), var(--teal), var(--success));
+}
+
+.s-item {
+    padding: 8px 16px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+}
+
+.s-item:last-child {
+    border-right: none;
+}
+
+.s-label {
+    font-size: 0.64rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 3px;
+}
+
+.s-value {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+}
+
+.s-change {
+    font-size: 0.68rem;
+    font-weight: 600;
+    margin-top: 3px;
+}
+
+.s-change.up {
+    color: var(--success);
+}
+
+.s-change.dn {
+    color: var(--danger);
+}
+
+.s-change.nt {
+    color: var(--muted);
+}
+
+/* ── KPI Card ─────────────────────────────────────────── */
+.kpi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    position: relative;
+    overflow: hidden;
+    transition:
+        box-shadow 0.18s,
+        transform 0.18s;
+}
+
+.kpi-card:hover {
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.09);
+    transform: translateY(-1px);
+}
+
+.kpi-card .card-accentbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--p);
+}
+
+.kpi-card .card-label {
+    font-size: 0.64rem;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 5px;
+    margin-top: 4px;
+}
+
+.kpi-card .card-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.1;
+    margin-bottom: 5px;
+}
+
+.kpi-card .card-value.sm {
+    font-size: 1.15rem;
+}
+
+.vpill {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+}
+
+.vpill.good {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.vpill.bad {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.vpill.nt {
+    background: var(--light);
+    color: var(--muted);
+}
+
+.vs-label {
+    font-size: 0.66rem;
+    color: var(--muted);
+    margin-left: 4px;
+}
+
+.spark-wrap {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 44px;
+    opacity: 0.55;
+}
+
+/* ── Section Title ───────────────────────────────────── */
+.sect-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.sect-title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+}
+
+/* ── Chart Card ──────────────────────────────────────── */
+.chart-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    transition: box-shadow 0.18s;
+}
+
+.chart-card:hover {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+}
+
+.cc-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 2px;
+}
+
+.cc-sub {
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-bottom: 14px;
+}
+
+/* ── Gauge ───────────────────────────────────────────── */
+.gauge-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.gauge-label {
+    position: absolute;
+    bottom: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.g-val {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+}
+
+.g-sub {
+    font-size: 0.63rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-top: 2px;
+}
+
+/* ── Metric Row ──────────────────────────────────────── */
+.mrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--light);
+}
+
+.mrow:last-child {
+    border-bottom: none;
+}
+
+.mrow .mn {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.mrow .mv {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.mrow .mbar-wrap {
+    flex: 1;
+    margin: 0 10px;
+    background: var(--light);
+    border-radius: 4px;
+    height: 5px;
+    overflow: hidden;
+}
+
+.mrow .mbar {
+    height: 5px;
+    border-radius: 4px;
+    background: var(--p);
+}
+
+/* ── Tab panes ───────────────────────────────────────── */
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* ── Info pill ───────────────────────────────────────── */
+.info-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--p-light);
+    color: var(--p);
+    font-size: 0.67rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+}
+
+/* ── Scrollbar ───────────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+    .summary-banner {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .kpi-header-inner {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+}
+
+/* ── Stripe-style Dropdown ──────────────────────────────── */
+.period-select-wrap {
+    position: relative;
+}
+
+.period-select-wrap select {
+    display: none !important;
+}
+
+.stripe-dropdown {
+    position: relative;
+    user-select: none;
+}
+
+.stripe-dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.stripe-dropdown-toggle:hover {
+    border-color: var(--p);
+    box-shadow: 0 1px 3px rgba(0, 120, 200, 0.12);
+}
+
+.stripe-dropdown-toggle .dd-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--muted);
+    transition: transform 0.2s;
+}
+
+.stripe-dropdown.open .dd-icon {
+    transform: rotate(180deg);
+}
+
+.stripe-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 220px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.12),
+        0 2px 8px rgba(0, 0, 0, 0.06);
+    padding: 6px;
+    z-index: 200;
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+    pointer-events: none;
+    transition:
+        opacity 0.18s,
+        transform 0.18s;
+}
+
+.stripe-dropdown.open .stripe-dropdown-menu {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.stripe-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+
+.stripe-dropdown-item:hover {
+    background: var(--p-light);
+    color: var(--p);
+}
+
+.stripe-dropdown-item.active {
+    background: var(--p-light);
+    color: var(--p);
+    font-weight: 600;
+}
+
+.stripe-dropdown-item.active::after {
+    content: "";
+    margin-left: auto;
+    width: 16px;
+    height: 16px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%230078c8' viewBox='0 0 16 16'%3E%3Cpath d='M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+}
