@@ -7,28 +7,8 @@ on:
     branches: [ main, master ]
 
 jobs:
-  # 1. Static Application Security Testing (SAST)
-  semgrep-sast:
-    name: Semgrep SAST Scan
-    runs-on: ubuntu-latest
-    container:
-      image: semgrep/semgrep
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Run Comprehensive Security Scan
-        run: >
-          semgrep scan 
-          --no-error 
-          --config p/security-audit 
-          --config p/owasp-top-ten 
-          --config p/php 
-          --config p/javascript
-
-  # 2. Secret Leak Detection
-  secret-scan:
-    name: TruffleHog Secret Scan
+  security-audit:
+    name: Run All Security Checks & Save Report
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -36,31 +16,55 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: TruffleHog OSS
-        uses: trufflesecurity/trufflehog@main
-        with:
-          extra_args: --only-verified
-
-  # 3. Dependency Vulnerability Audit
-  dependency-audit:
-    name: Dependency Vulnerability Audit
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-
-      - name: Audit PHP Dependencies (Composer)
-        run: composer audit --locked || true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Audit JS Dependencies (NPM)
-        run: npm audit --audit-level=high || true
+      - name: Install Semgrep
+        run: pip install semgrep
+
+      - name: Initialize Report File
+        run: |
+          echo "==========================================" > security-report.txt
+          echo "       FULL SECURITY AUDIT REPORT         " >> security-report.txt
+          echo "       Generated: $(date)                " >> security-report.txt
+          echo "==========================================" >> security-report.txt
+          echo "" >> security-report.txt
+
+      - name: Run Semgrep SAST Scan
+        run: |
+          echo "------------------------------------------" >> security-report.txt
+          echo "1. SEMGREP SAST CODE FINDINGS" >> security-report.txt
+          echo "------------------------------------------" >> security-report.txt
+          semgrep scan --config p/security-audit --config p/owasp-top-ten --config p/php --config p/javascript >> security-report.txt 2>&1 || true
+          echo "" >> security-report.txt
+
+      - name: Run TruffleHog Secret Scan
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
+
+      - name: Run PHP & JS Dependency Audits
+        run: |
+          echo "------------------------------------------" >> security-report.txt
+          echo "2. COMPOSER (PHP) DEPENDENCY VULNERABILITIES" >> security-report.txt
+          echo "------------------------------------------" >> security-report.txt
+          composer audit --locked >> security-report.txt 2>&1 || true
+          echo "" >> security-report.txt
+
+          echo "------------------------------------------" >> security-report.txt
+          echo "3. NPM (JS) DEPENDENCY VULNERABILITIES" >> security-report.txt
+          echo "------------------------------------------" >> security-report.txt
+          npm audit --audit-level=high >> security-report.txt 2>&1 || true
+
+      - name: Upload Security Report Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-security-report
+          path: security-report.txt
