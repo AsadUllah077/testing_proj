@@ -54,7 +54,7 @@ jobs:
           php-version: '8.2'
 
       - name: Audit PHP Dependencies (Composer)
-        run: composer audit
+        run: composer audit --locked
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
